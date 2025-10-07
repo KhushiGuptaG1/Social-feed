@@ -21,15 +21,28 @@ const CommentSection = ({ feedId }: { feedId: number }) => {
   };
 
   return (
-    <div className="mt-2">
+    <div className="mt-4 border-t pt-4">
+      <h3 className="font-semibold mb-3">Comments</h3>
       {comments.map((c, i) => (
-        <div key={i}>
-          <span className="font-bold">{c.user.username}: </span>
+        <div key={i} className="mb-2 p-2 bg-gray-50 rounded">
+          <span className="font-semibold text-blue-600">{c.user.username}: </span>
           {c.text}
         </div>
       ))}
-      <input className="border" value={text} onChange={(e) => setText(e.target.value)} />
-      <button onClick={addComment}>Add</button>
+      <div className="flex mt-3">
+        <input
+          className="flex-1 p-2 border border-gray-300 rounded-l focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="Write a comment..."
+        />
+        <button
+          onClick={addComment}
+          className="bg-blue-600 text-white px-4 py-2 rounded-r hover:bg-blue-700 transition"
+        >
+          Post
+        </button>
+      </div>
     </div>
   );
 };
