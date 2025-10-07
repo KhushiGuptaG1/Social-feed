@@ -25,12 +25,9 @@ import { AllExceptionsFilter } from '../common/filters/all-exceptions.filter';
       autoLoadEntities: true,
       synchronize: true, // Dev only
     }),
-    MongooseModule.forRoot('mongodb://localhost/error_logs'),
+
     CacheModule.register({
       isGlobal: true,
-      store: redisStore as any,
-      host: 'localhost',
-      port: 6379,
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', '..', 'uploads'),
@@ -41,7 +38,6 @@ import { AllExceptionsFilter } from '../common/filters/all-exceptions.filter';
     FeedsModule,
     CommentsModule,
     ReportsModule,
-    LogsModule,
   ],
   providers: [AllExceptionsFilter],
 })

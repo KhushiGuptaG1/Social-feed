@@ -4,6 +4,7 @@ import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import { useRouter } from 'next/router';
 import getCroppedImg from '../utils/cropImage';
+import Header from '../components/Header';
 
 const CreateFeed = () => {
   const { user } = useContext(AuthContext);
@@ -63,32 +64,67 @@ const CreateFeed = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <textarea className="w-full" value={text} onChange={(e) => setText(e.target.value)} placeholder="Text" />
-      <input type="file" multiple accept="image/*" onChange={onFileChange} />
-      <div className="grid grid-cols-2 gap-2 mt-4">
-        {images.map((img, i) => (
-          <div key={i}>
-            <img src={img} alt="" className="w-full" />
-            <button onClick={() => setCurrentImageIndex(i)}>Crop</button>
-          </div>
-        ))}
-      </div>
-      {currentImageIndex !== -1 && (
-        <div className="relative w-full h-96 mt-4">
-          <Cropper
-            image={images[currentImageIndex]}
-            crop={crop}
-            zoom={zoom}
-            aspect={4 / 3} // Adjustable
-            onCropChange={setCrop}
-            onZoomChange={setZoom}
-            onCropComplete={onCropComplete}
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+      <Header />
+      <div className="container mx-auto p-4 max-w-2xl">
+        <div className="bg-white p-6 rounded-xl shadow-2xl">
+          <h1 className="text-2xl font-bold mb-4">Create New Post</h1>
+          <textarea
+            className="w-full p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            rows={4}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            placeholder="What's on your mind?"
           />
-          <button onClick={cropImage}>Save Crop</button>
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={onFileChange}
+            className="mb-4"
+          />
+          <div className="grid grid-cols-2 gap-2 mb-4">
+            {images.map((img, i) => (
+              <div key={i} className="relative">
+                <img src={img} alt="" className="w-full h-32 object-cover rounded" />
+                <button
+                  onClick={() => setCurrentImageIndex(i)}
+                  className="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded text-sm hover:bg-blue-600"
+                >
+                  Crop
+                </button>
+              </div>
+            ))}
+          </div>
+          {currentImageIndex !== -1 && (
+            <div className="mb-4">
+              <div className="relative w-full h-96 bg-gray-200 rounded">
+                <Cropper
+                  image={images[currentImageIndex]}
+                  crop={crop}
+                  zoom={zoom}
+                  aspect={4 / 3}
+                  onCropChange={setCrop}
+                  onZoomChange={setZoom}
+                  onCropComplete={onCropComplete}
+                />
+              </div>
+              <button
+                onClick={cropImage}
+                className="mt-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+              >
+                Save Crop
+              </button>
+            </div>
+          )}
+          <button
+            onClick={submit}
+            className="w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700 transition"
+          >
+            Post
+          </button>
         </div>
-      )}
-      <button onClick={submit} className="mt-4">Post</button>
+      </div>
     </div>
   );
 };

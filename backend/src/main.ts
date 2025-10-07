@@ -10,7 +10,7 @@ import { join } from 'path';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.useGlobalPipes(new ValidationPipe());
-  app.useGlobalFilters(new AllExceptionsFilter(app.get(LogsService)));
+  app.useGlobalFilters(new AllExceptionsFilter());
   app.enableCors();
 
   app.useStaticAssets(join(__dirname, '..', 'uploads'), {
