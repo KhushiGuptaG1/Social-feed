@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import axios from "../lib/axiosSetup";
 
 const CommentSection = ({ feedId }: { feedId: number }) => {
   const [comments, setComments] = useState<any[]>([]);
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
 
   useEffect(() => {
     const fetch = async () => {
@@ -15,9 +15,9 @@ const CommentSection = ({ feedId }: { feedId: number }) => {
 
   const addComment = async () => {
     if (!text) return;
-    await axios.post('/comments', { feedId, text });
-    setComments([...comments, { text, user: { username: 'You' } }]);
-    setText('');
+    await axios.post("/comments", { feedId, text });
+    setComments([...comments, { text, user: { username: "You" } }]);
+    setText("");
   };
 
   return (
@@ -25,20 +25,22 @@ const CommentSection = ({ feedId }: { feedId: number }) => {
       <h3 className="font-semibold mb-3">Comments</h3>
       {comments.map((c, i) => (
         <div key={i} className="mb-2 p-2 bg-gray-50 rounded">
-          <span className="font-semibold text-blue-600">{c.user.username}: </span>
+          <span className="font-semibold text-purple-600">
+            {c.user.username}:{" "}
+          </span>
           {c.text}
         </div>
       ))}
       <div className="flex mt-3">
         <input
-          className="flex-1 p-2 border border-gray-300 rounded-l focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 p-2 border border-gray-300 rounded-l focus:outline-none focus:ring-2 focus:ring-purple-500"
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Write a comment..."
         />
         <button
           onClick={addComment}
-          className="bg-blue-600 text-white px-4 py-2 rounded-r hover:bg-blue-700 transition"
+          className="bg-purple-600 text-white px-4 py-2 rounded-r hover:bg-purple-700 transition"
         >
           Post
         </button>

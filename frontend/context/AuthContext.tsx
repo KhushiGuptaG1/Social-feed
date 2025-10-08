@@ -1,5 +1,5 @@
-import { createContext, useState, ReactNode, useEffect } from 'react';
-import axios from 'axios';
+import { createContext, useState, ReactNode, useEffect } from "react";
+import axios from "../lib/axiosSetup";
 
 interface AuthContextType {
   user: any;
@@ -16,32 +16,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Configure Axios once
   useEffect(() => {
-    axios.defaults.baseURL = 'http://localhost:4000'; // Backend URL
-    axios.defaults.headers.common['Content-Type'] = 'application/json';
+    axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+    axios.defaults.headers.common["Content-Type"] = "application/json";
     if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     } else {
-      delete axios.defaults.headers.common['Authorization'];
+      delete axios.defaults.headers.common["Authorization"];
     }
   }, [token]);
 
   const login = async (username: string, password: string) => {
     try {
-      const res = await axios.post('/auth/login', { username, password });
-      const accessToken = res.data.access_token; // make sure backend sends this
+      const res = await axios.post("/auth/login", { username, password });
+      const accessToken = res.data.access_token;
       setToken(accessToken);
-      setUser({ username }); // You can replace with actual user data from backend
+      setUser({ username });
     } catch (err: any) {
-      console.error('Login failed:', err.response?.data || err.message);
+      console.error("Login failed:", err.response?.data || err.message);
       throw err;
     }
   };
 
   const register = async (username: string, password: string) => {
     try {
-      await axios.post('/auth/register', { username, password });
+      await axios.post("/auth/register", { username, password });
     } catch (err: any) {
-      console.error('Registration failed:', err.response?.data || err.message);
+      console.error("Registration failed:", err.response?.data || err.message);
       throw err;
     }
   };
