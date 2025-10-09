@@ -3,22 +3,27 @@ import { FeedsRepository } from './feeds.repository';
 import { Feed } from './feed.entity';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Injectable()
 export class FeedsService {
   constructor(
     private repo: FeedsRepository,
+    private cloudinaryService: CloudinaryService,
     @Inject(CACHE_MANAGER) private cache: Cache,
   ) { }
 
   /**
    * Creates a feed.
    * @param feed Feed data.
-   * @param images Image URLs.
+   * @param images Image files.
    * @returns Created feed.
    */
-  async create(feed: Partial<Feed>, images: string[]): Promise<Feed> {
-    feed.images = images;
+  async create(feed: Partial<Feed>, images: Express.Multer.File[]): Promise<Feed> {
+    if (images && images.length > 0) {
+      const uploadResults = await this.cloudinaryService.uploadImages(images);
+      feed.images = uploadResults.map(result => result.secure_url);
+    }
     const created = await this.repo.create(feed);
     // Invalidate cache for page 1
     await this.cache.del('feeds_1_10');

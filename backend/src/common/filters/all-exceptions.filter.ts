@@ -1,6 +1,5 @@
 import { Catch, ExceptionFilter, ArgumentsHost, HttpException, Injectable } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { LogsService } from '../../logs/logs.service';
 
 @Injectable()
 @Catch()

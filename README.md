@@ -2,7 +2,7 @@
 
 ## Setup
 1. Install PostgreSQL, MongoDB, Redis.
-2. Create PostgreSQL DB `social_feed` and run schema above.
+2. Create PostgreSQL DB `social_feed`.
 3. Backend:
    - cd backend
    - npm install

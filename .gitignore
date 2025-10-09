@@ -26,6 +26,9 @@ out/
 tmp/
 temp/
 
+# Uploads
+uploads/
+
 # Environment files
 .env
 .env.local
